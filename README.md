@@ -4,6 +4,7 @@ This repository contains public developer documentation for Atom9 Auth.
 
 ## Start here
 
+- [API cookbook](./cookbook/api-cookbook.md)
 - [First 20 minutes](./first-20-minutes.md)
 - [Quickstart](./quickstart.md)
 - [Magic link auth](./guides/magic-link.md)
