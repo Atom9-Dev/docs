@@ -4,6 +4,7 @@ This repository contains public developer documentation for Atom9 Auth.
 
 ## Start here
 
+- [First 20 minutes](./first-20-minutes.md)
 - [Quickstart](./quickstart.md)
 - [Magic link auth](./guides/magic-link.md)
 - [Google OIDC](./guides/google-oidc.md)
