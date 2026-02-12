@@ -11,3 +11,6 @@ This repository contains public developer documentation for Atom9 Auth.
 - [Sessions lifecycle](./guides/sessions.md)
 - [Onboarding + readiness](./guides/onboarding.md)
 - [Troubleshooting](./guides/troubleshooting.md)
+
+- [Security model](./guides/security-model.md)
+- [Pricing tiers](./guides/pricing-tiers.md)
