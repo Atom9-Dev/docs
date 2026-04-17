@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Atom9 Example (Vanilla)</title>
+  <style>
+    body{font-family:system-ui;background:#0c1018;color:#dbe8ff;padding:24px}
+    input,button{margin:4px;padding:8px;border-radius:8px;border:1px solid #324766;background:#132036;color:#dbe8ff}
+    pre{background:#0a1628;padding:12px;border-radius:8px;white-space:pre-wrap}
+  </style>
+</head>
+<body>
+  <h1>Atom9 Vanilla Example</h1>
+  <input id="tenant" value="11111111-1111-1111-1111-111111111111" size="42" />
+  <input id="appSlug" value="demo-app" />
+  <input id="callback" value="https://example.com/auth/callback" size="34" />
+  <input id="email" value="user@example.com" size="24" />
+  <div>
+    <button onclick="call('/onboarding/quickstart',{appSlug:appSlug.value,callbackUrl:callback.value})">quickstart check</button>
+    <button onclick="call('/onboarding/test-login',{appSlug:appSlug.value,callbackUrl:callback.value,method:'magic_link',email:email.value})">test magic-link</button>
+    <button onclick="call('/onboarding/test-login',{appSlug:appSlug.value,callbackUrl:callback.value,method:'google_oidc',email:email.value})">test google</button>
+    <button onclick="call('/onboarding/test-login',{appSlug:appSlug.value,callbackUrl:callback.value,method:'microsoft_oidc',email:email.value})">test microsoft</button>
+  </div>
+  <pre id="out">Ready.</pre>
+<script>
+async function call(path, body){
+  const res = await fetch('https://id.atom9.com/id-bff/id'+path, {
+    method:'POST',
+    headers:{'content-type':'application/json','x-tenant-id':tenant.value,'x-client-role':'admin','x-actor-user-id':'example-user'},
+    body: JSON.stringify(body||{})
+  });
+  out.textContent = `POST ${path} -> ${res.status}\n` + await res.text();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Atom9 BFF — Minimal Example</title>
+  <style>
+    body { font: 15px/1.5 -apple-system, sans-serif; max-width: 32rem; margin: 3rem auto; padding: 0 1rem; }
+    form { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+    input, button { padding: 0.5rem; font: inherit; }
+    button { background: #2563eb; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+    pre { background: #f1f5f9; padding: 0.75rem; border-radius: 4px; overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <h1>Atom9 BFF — Minimal Example</h1>
+  <p id="status">Checking…</p>
+
+  <form id="login">
+    <input name="email" type="email" placeholder="email" required>
+    <input name="password" type="password" placeholder="password" required>
+    <button>Log in</button>
+  </form>
+
+  <button id="logout" hidden>Log out</button>
+  <pre id="out"></pre>
+
+  <script type="module">
+    import { createAtom9Client } from '/atom9-bff.js';
+    const a9 = createAtom9Client();
+
+    const status = document.getElementById('status');
+    const out = document.getElementById('out');
+    const loginForm = document.getElementById('login');
+    const logoutBtn = document.getElementById('logout');
+
+    async function refresh() {
+      const me = await a9.me();
+      if (me?.authenticated) {
+        status.textContent = `Signed in as ${me.user.email}`;
+        loginForm.hidden = true;
+        logoutBtn.hidden = false;
+      } else {
+        status.textContent = 'Not signed in';
+        loginForm.hidden = false;
+        logoutBtn.hidden = true;
+      }
+      out.textContent = JSON.stringify(me, null, 2);
+    }
+
+    loginForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const { email, password } = Object.fromEntries(new FormData(e.target).entries());
+      const r = await a9.auth.login({ email, password });
+      out.textContent = JSON.stringify(r, null, 2);
+      if (r?.authenticated) refresh();
+    });
+
+    logoutBtn.addEventListener('click', async () => { await a9.auth.logout(); refresh(); });
+
+    refresh();
+  </script>
+</body>
+</html>
